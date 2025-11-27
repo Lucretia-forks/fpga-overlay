@@ -24,8 +24,8 @@ DEPEND="ice40? ( sci-electronics/icestorm sci-electronics/yosys )
 
 src_configure() {
 	local mycmakeargs=(
-		"-DARCH=$(usex ice40 "ice40;" "")$(usex ecp5 "ecp5;" "")$(usex gowin "gowin;" "")$(usex himbaechel "himbaechel;" "")"
-		$(usex himbaechel -DHIMBAECHEL_GOWIN_DEVICES="all" "")
+		"-DARCH=$(usex ice40 "ice40;" "")$(usex ecp5 "ecp5;" "")$(usex himbaechel "himbaechel;" "")"
+		$(usex himbaechel -DHIMBAECHEL_UARCH="$(usex gowin "gowin;" "")" "") # TODO: xilinx requires project xray
 		$(usex qt5 -DBUILD_GUI="ON" "OFF")
 	)
 
