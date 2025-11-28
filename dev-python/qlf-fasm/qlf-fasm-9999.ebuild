@@ -1,9 +1,10 @@
 # Copyright 2021 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=7
+EAPI=8
 
-PYTHON_COMPAT=( python3_{6..10} )
+PYTHON_COMPAT=( python3_{9..14} )
+DISTUTILS_USE_PEP517=setuptools
 
 inherit git-r3 distutils-r1
 
