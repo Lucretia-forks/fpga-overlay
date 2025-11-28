@@ -3,7 +3,7 @@
 
 EAPI=8
 
-PYTHON_COMPAT=( python3_{10..12} )
+PYTHON_COMPAT=( python3_{10..14} )
 
 inherit git-r3 python-r1
 
@@ -35,9 +35,9 @@ DEPEND="
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
-PATCHES=(
-	"${FILESDIR}/${P}-makefile.patch"
-)
+# PATCHES=(
+# 	"${FILESDIR}/${P}-makefile.patch"
+# )
 
 src_configure() {
 	if use clang ; then
@@ -46,8 +46,18 @@ src_configure() {
 		emake config-gcc
 	fi
 
+	if use abc ; then
+		(
+			echo "ENABLE_ABC := 1"
+			echo "ABCEXTERNAL := `which abc`"
+		) >Makefile.conf
+	else
+		(
+			echo "ENABLE_ABC := 0"
+		) >Makefile.conf
+	fi
+
 	(
-		echo "ENABLE_ABC := `usex abc 1 0`"
 		echo "ENABLE_TCL := `usex tcl 1 0`"
 		echo "ENABLE_PLUGINS := `usex plugins 1 0`"
 		echo "ENABLE_READLINE := `usex readline 1 0`"
@@ -55,7 +65,7 @@ src_configure() {
 		echo "ENABLE_LIBYOSYS := 1"
 		echo "ENABLE_PYOSYS := `usex python 1 0`"
 		echo "ENABLE_ZLIB := `usex zlib 1 0`"
-	) >Makefile.conf
+	) >>Makefile.conf
 }
 
 src_compile() {
